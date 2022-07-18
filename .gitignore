@@ -1,8 +1,9 @@
 .RData
 .Rhistory
-.proj
+.Rproj
 
 dataset
+.Rproj.user
 
 main.R
 notes.txt
