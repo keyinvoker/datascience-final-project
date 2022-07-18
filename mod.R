@@ -6,10 +6,12 @@ library(dplyr)
 library(tidyr)
 library(DT)
 
-library(scales)
-library(cluster)
-library(tidyverse)
-library(factoextra)
+# library(scales)
+# library(cluster)
+# library(tidyverse)
+# library(factoextra)
+
+
 
 # DATA READING
 # - downloaded from https://data.fivethirtyeight.com/
@@ -18,6 +20,8 @@ may_data <- read.csv("dataset/uber-raw-data-may14.csv")
 jun_data <- read.csv("dataset/uber-raw-data-jun14.csv")
 
 uber_data <- rbind(apr_data, may_data, jun_data)
+
+
 
 # PREPROCESSING
 uber_data$Date.Time <- as.POSIXct(uber_data$Date.Time, format = "%m/%d/%Y %H:%M:%S")
@@ -35,15 +39,17 @@ uber_data$hour <- factor(hour(hms(uber_data$Time)))
 uber_data$minute <- factor(minute(hms(uber_data$Time)))
 uber_data$second <- factor(second(hms(uber_data$Time)))
 
+
+
 # CLEANING
 sum(is.null(uber_data))
+
+
 
 # PLOTTING: trips by hours in a day
 hour_data<-uber_data %>%
   group_by(hour) %>%
   dplyr::summarize(Total = n())
-
-datatable(hour_data)
 
 ggplot(hour_data, aes(hour, Total)) + 
   geom_bar(stat = "identity", fill = "steelblue", color = "red") +
@@ -60,20 +66,21 @@ ggplot(month_hour, aes(hour, Total, fill = month)) +
   ggtitle("Trips by Hour and Month") +
   scale_y_continuous(labels = comma)
 
+
+
 # PLOTTING: uber_data by trips during every day of the month
-colors = c("#CC1011", "#665555", "#05a399", "#cfcaca", "#f5e840", "#0683c9", "#e075b0")
+colors = c("orange", "red", "blue", "green", "purple", "black", "pink")
 
 day_group <- uber_data %>%
   group_by(day) %>%
   dplyr::summarize(Total = n())
 
-datatable(day_group)
-
 ggplot(day_group, aes(day, Total)) + 
-  geom_bar( stat = "identity", fill = "steelblue") +
+  geom_bar(stat = "identity", fill = "steelblue") +
   ggtitle("Trips Every Day") +
   theme(legend.position = "none") +
   scale_y_continuous(labels = comma)
+
 
 day_month_group <- uber_data %>%
   group_by(month, day) %>%
@@ -85,11 +92,10 @@ ggplot(day_month_group, aes(day, Total, fill = month)) +
   scale_y_continuous(labels = comma) +
   scale_fill_manual(values = colors)
 
+
 month_group <- uber_data %>%
   group_by(month) %>%
   dplyr::summarize(Total = n())
-
-datatable(month_group)
 
 ggplot(month_group, aes(month, Total, fill = month)) + 
   geom_bar( stat = "identity") +
@@ -97,6 +103,7 @@ ggplot(month_group, aes(month, Total, fill = month)) +
   theme(legend.position = "none") +
   scale_y_continuous(labels = comma) +
   scale_fill_manual(values = colors)
+
 
 month_weekday <- uber_data %>%
   group_by(month, dayofweek) %>%
@@ -107,6 +114,7 @@ ggplot(month_weekday, aes(month, Total, fill = dayofweek)) +
   ggtitle("Trips by Day and Month") +
   scale_y_continuous(labels = comma) +
   scale_fill_manual(values = colors)
+
 
 
 # Finding out the number of Trips by bases
@@ -132,8 +140,6 @@ ggplot(uber_data, aes(Base, fill = dayofweek)) +
 day_and_hour <- uber_data %>%
   group_by(day, hour) %>%
   dplyr::summarize(Total = n())
-
-datatable(day_and_hour)
 
 ggplot(day_and_hour, aes(day, hour, fill = Total)) +
   geom_tile(color = "white") +
@@ -169,12 +175,9 @@ clus <- uber_data %>%
   group_by(Lat, Lon) %>%
   dplyr::summarize()
 
-# SCALING -> to avoid arbitrary variable unit dependency
-# clus <- scale(clus)
-
 # rmd: let's use k=6 for this case
 k2 <- kmeans(clus, centers = 2, nstart = 25)
 str(k2)
 k2
 
-fviz_cluster(k2, data = clus, main = "Clusterfook")
+fviz_cluster(k2, data = clus, main = "Clusterfuck")
