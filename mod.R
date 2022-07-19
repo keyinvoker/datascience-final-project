@@ -6,11 +6,6 @@ library(dplyr)
 library(tidyr)
 library(DT)
 
-# library(scales)
-# library(cluster)
-# library(tidyverse)
-# library(factoextra)
-
 
 
 # DATA READING
@@ -41,11 +36,6 @@ uber_data$second <- factor(second(hms(uber_data$Time)))
 
 
 
-# CLEANING
-sum(is.null(uber_data))
-
-
-
 # PLOTTING: trips by hours in a day
 hour_data<-uber_data %>%
   group_by(hour) %>%
@@ -68,7 +58,7 @@ ggplot(month_hour, aes(hour, Total, fill = month)) +
 
 
 
-# PLOTTING: uber_data by trips during every day of the month
+# PLOTTING: trips during every day of the month
 colors = c("orange", "red", "blue", "green", "purple", "black", "pink")
 
 day_group <- uber_data %>%
@@ -117,7 +107,7 @@ ggplot(month_weekday, aes(month, Total, fill = dayofweek)) +
 
 
 
-# Finding out the number of Trips by bases
+# Finding out the number of Trips by Base
 ggplot(uber_data, aes(Base)) + 
   geom_bar(fill = "darkred") +
   scale_y_continuous(labels = comma) +
@@ -136,23 +126,8 @@ ggplot(uber_data, aes(Base, fill = dayofweek)) +
   scale_fill_manual(values = colors)
 
 
-# Creating a Heatmap visualization of day, hour and month
-day_and_hour <- uber_data %>%
-  group_by(day, hour) %>%
-  dplyr::summarize(Total = n())
 
-ggplot(day_and_hour, aes(day, hour, fill = Total)) +
-  geom_tile(color = "white") +
-  ggtitle("Heatmap by Hour and Day")
-
-ggplot(day_month_group, aes(day, month, fill = Total)) +
-  geom_tile(color = "white") +
-  ggtitle("Heatmap by Month and Day")
-
-ggplot(month_weekday, aes(dayofweek, month, fill = Total)) +
-  geom_tile(color = "white") +
-  ggtitle("Heatmap by Month and Day of Week")
-
+# Creating a Heatmap visualization of day, hour and month)
 month_base <-  uber_data %>%
   group_by(Base, month) %>%
   dplyr::summarize(Total = n())
@@ -161,16 +136,9 @@ ggplot(month_base, aes(Base, month, fill = Total)) +
   geom_tile(color = "white") +
   ggtitle("Heatmap by Month and Bases")
 
-dayofweek_bases <-  uber_data %>%
-  group_by(Base, dayofweek) %>%
-  dplyr::summarize(Total = n())
-
-ggplot(dayofweek_bases, aes(Base, dayofweek, fill = Total)) +
-  geom_tile(color = "white") +
-  ggtitle("Heatmap by Bases and Day of Week")
-
 # K-MEANS CLUSTERING
 # - https://towardsdatascience.com/how-does-uber-use-clustering-43b21e3e6b7d
+# - https://uc-r.github.io/kmeans_clustering
 clus <- uber_data %>%
   group_by(Lat, Lon) %>%
   dplyr::summarize()
@@ -178,6 +146,5 @@ clus <- uber_data %>%
 # rmd: let's use k=6 for this case
 k2 <- kmeans(clus, centers = 2, nstart = 25)
 str(k2)
-k2
 
 fviz_cluster(k2, data = clus, main = "Clusterfuck")
