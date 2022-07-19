@@ -130,12 +130,25 @@ max_lat <- 40.9176
 min_long <- -74.15
 max_long <- -73.7004
 
+ggplot(uber_data, aes(x=Lon, y=Lat)) +
+  geom_point(size=1, color = "blue") +
+  scale_x_continuous(limits=c(min_long, max_long)) +
+  scale_y_continuous(limits=c(min_lat, max_lat)) +
+  theme_map() +
+  ggtitle("NYC Map Based On Uber Ride Orders During Apr-Jun 2014")
+
+dev.copy(png, 'map.png', width=480, height=480)
+dev.off()
+
 ggplot(uber_data, aes(x=Lon, y=Lat, color = Base)) +
   geom_point(size=1) +
   scale_x_continuous(limits=c(min_long, max_long)) +
   scale_y_continuous(limits=c(min_lat, max_lat)) +
   theme_map() +
-  ggtitle("NYC Map Based On Uber Ride Orders During Apr-Jun 2014 by Base")
+  ggtitle("NYC Map Based On Uber Ride Orders During Apr-Jun 2014 by Bases")
+
+dev.copy(png, 'mapByBases.png', width=480, height=480)
+dev.off()
 
 # K-MEANS CLUSTERING (?)
 # - https://towardsdatascience.com/how-does-uber-use-clustering-43b21e3e6b7d
