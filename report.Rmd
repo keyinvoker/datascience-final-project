@@ -1,0 +1,71 @@
+---
+title: "Uber Spread Analysis"
+author: "Joerio Christo Chandra, Priananda Azhar, Syafuq"
+date: "19-07-2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(ggthemes)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(DT)
+library(factoextra)
+```
+
+### BACKGROUND
+
+As part of our final project for Data Science course (STIS3023), we run several analyses using Uber's data. Our main objectives are:
+
+* drawing plots
+* clustering
+
+### OBJECTIVE
+
+* to get a gist of the Uber service spread based on locations of order
+* to find out the trend of customers' order locations based on day, month, hour
+
+### SOURCE
+
+For this project, we use the Uber data that contains latitude and longitude. It is downloaded from <https://data.fivethirtyeight.com/>{Five Thirty Eight}.
+
+### DATA PREPARATION
+
+In the beningging, we read the data set first. We are limiting ourselves to using three CSV files for this project, which is the data of Uber orders on months April to June of the year 2014. The example data can be seen below.
+```{r echo=FALSE}
+apr_data <- read.csv("dataset/uber-raw-data-apr14.csv")
+may_data <- read.csv("dataset/uber-raw-data-may14.csv")
+jun_data <- read.csv("dataset/uber-raw-data-jun14.csv")
+
+uber_data <- rbind(apr_data, may_data, jun_data)
+```
+
+```{r}
+head(uber_data, 5)
+```
+
+xxx
+
+### DATA ANALYSIS
+
+xxx
+
+```{r echo=FALSE}
+min_lat <- 40.5774
+max_lat <- 40.9176
+min_long <- -74.15
+max_long <- -73.7004
+
+ggplot(uber_data, aes(x=Lon, y=Lat, color = Base)) +
+  geom_point(size=1) +
+  scale_x_continuous(limits=c(min_long, max_long)) +
+  scale_y_continuous(limits=c(min_lat, max_lat)) +
+  theme_map() +
+  ggtitle("NYC Map Based On Uber Ride Orders During Apr-Jun 2014 by Base")
+```
+
+### 
