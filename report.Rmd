@@ -1,6 +1,6 @@
 ---
 title: "Uber Spread Analysis"
-author: "Joerio Christo Chandra, Priananda Azhar, Syafuq"
+author: "Joerio Christo Chandra, Priananda Azhar, Syafiq"
 date: "19-07-2022"
 output: html_document
 ---
